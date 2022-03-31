@@ -1,1 +1,4 @@
-
+spring:
+  jackson:
+    # 默认时区
+    time-zone: "GMT+8"
