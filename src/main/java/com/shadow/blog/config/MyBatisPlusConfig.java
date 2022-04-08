@@ -1,6 +1,8 @@
 package com.shadow.blog.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
+import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -19,5 +21,10 @@ public class MyBatisPlusConfig {
     MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
     interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
     return interceptor;
+  }
+
+  @Bean
+  public IKeyGenerator keyGenerator() {
+    return new H2KeyGenerator();
   }
 }

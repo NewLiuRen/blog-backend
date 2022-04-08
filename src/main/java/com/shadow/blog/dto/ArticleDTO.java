@@ -1,7 +1,6 @@
 package com.shadow.blog.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,13 +11,13 @@ import java.util.Date;
  */
 @Data
 public class ArticleDTO {
-  private Integer id;
+  private String id;
   private String title;
+  private String content;
   private String description;
   private Integer clickCount;
   private Integer disagreeCount;
   private Boolean delete;
-  private Integer contentId;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date gmtCreate;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -2,3 +2,10 @@ spring:
   jackson:
     # 默认时区
     time-zone: "GMT+8"
+  profiles:
+    group:
+      development:
+        - "devDB"
+    active: "development"
+mybatis-plus:
+  mapper-locations: classpath:com/shadow/blog/mapper/*.xml

@@ -1,5 +1,8 @@
 package com.shadow.blog.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -10,12 +13,14 @@ import java.util.Date;
  * @date 2022-3-31 10:36
  */
 @Data
+@TableName("blog_resource")
 public class Resource {
-  private int id;
-  private int level;
+  @TableId(value = "id", type = IdType.ASSIGN_ID)
+  private String id;
+  private Integer level;
   private String resourceName;
   private String description;
-  private int parentId;
+  private String parentId;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date gmtCreate;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
