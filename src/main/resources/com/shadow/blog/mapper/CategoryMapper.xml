@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shadow.blog.mapper.CategoryMapper">
+    <resultMap id="categoryResultMap" type="com.shadow.blog.entity.CategoryDO">
+        <result property="parentId" column="parent_id"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <sql id="baseColumnSet">
+        `id`,
+        `level`,
+        `name`,
+        `icon`,
+        `color`,
+        `parent_id`,
+        `order_num`,
+        `gmt_create`,
+        `gmt_modified`
+    </sql>
+
+    <select id="listFirstLevelCategory" resultMap="categoryResultMap">
+        SELECT
+            <include refid="baseColumnSet"/>
+        FROM
+            `blog_category`
+        WHERE
+            ISNULL(`parent_id`) OR `parent_id` = '';
+    </select>
+
+    <select id="listOtherLevelCategory" resultMap="categoryResultMap" parameterType="string">
+        SELECT
+            <include refid="baseColumnSet"/>
+        FROM
+            `blog_category`
+        WHERE
+            `parent_id` != ''
+            OR `parent_id` != NULL
+            AND FIND_IN_SET(`id`, FN_GET_CATEGORY_CHILD_NODE(#{pid}))
+        ORDER BY
+            `level`, `order_num`;
+    </select>
+
+    <select id="listCategoryByParentId" resultMap="categoryResultMap" parameterType="string">
+        SELECT
+            <include refid="baseColumnSet" />
+        FROM
+            `blog_category`
+        WHERE
+            `parent_id` = #{id}
+        ORDER BY
+            `order_num`;
+    </select>
+
+    <select id="listParentCategory" resultMap="categoryResultMap" parameterType="string">
+        SELECT
+            <include refid="baseColumnSet"/>
+        FROM
+            `blog_category`
+        WHERE
+            FIND_IN_SET(`id`, FN_GET_CATEGORY_PARENT_NODE(#{id}));
+    </select>
+
+    <update id="updateBaseById">
+        UPDATE
+            `blog_category`
+        SET
+            `name` = #{categoryDO.name},
+            `icon` = #{categoryDO.icon},
+            `color` = #{categoryDO.color}
+        WHERE
+            `id` = #{categoryDO.id}
+    </update>
+
+    <update id="moveCategory">
+        UPDATE
+            `blog_category`
+        SET
+            `parent_id` = #{parentCategoryDO.id},
+            `level` = #{parentCategoryDO.level} + 1,
+            `order_num` = #{categoryDO.orderNum}
+        WHERE
+            `id` = #{categoryDO.id};
+    </update>
+</mapper>

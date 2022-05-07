@@ -4,8 +4,8 @@ spring:
     time-zone: "GMT+8"
   profiles:
     group:
-      development:
+      dev:
         - "devDB"
-    active: "development"
+    active: "dev"
 mybatis-plus:
   mapper-locations: classpath:com/shadow/blog/mapper/*.xml

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shadow.blog.mapper.TagMapper">
+    <resultMap id="tagResultMap" type="com.shadow.blog.entity.TagDO">
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <sql id="baseColumnSet">
+        `id`,
+        `name`,
+        `icon`,
+        `color`,
+        `gmt_create`,
+        `gmt_modified`
+    </sql>
+
+    <select id="listTag" resultMap="tagResultMap">
+        SELECT
+            <include refid="baseColumnSet" />
+        FROM
+            `blog_tag`;
+    </select>
+
+    <select id="listTagByIds" resultMap="tagResultMap" parameterType="string">
+        SELECT
+            <include refid="baseColumnSet" />
+        FROM
+            `blog_tag`
+        WHERE
+            FIND_IN_SET(`id`, #{ids});
+    </select>
+</mapper>
